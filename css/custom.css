@@ -1,0 +1,23 @@
+@font-face {
+  font-family: myCustomFont;
+  src:url("../fonts/2.ttf");
+}
+
+
+.word{
+  letter-spacing: 1px;
+  font-family: myCustomFont;
+  font-size: 36px;
+  padding: 20px;
+  color: black;
+}
+
+.no{
+  text-decoration: none;
+  cursor: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/9632/heart.svg), auto;
+}
+
+
+.col-md-12{
+  align-items: center;
+  align-content: center;}

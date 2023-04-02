@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Memory Matching Madness</title>
+        <style>
+        @import url('https://fonts.cdnfonts.com/css/common-pixel');
+            body {
+                background-color: black;
+                color: white;
+                text-align: center;
+            }
+            h1{
+              font-family: 'Common Pixel', sans-serif;
+              padding-top: -5px;
+              padding-bottom: 0px;
+              font-size: 80px;
+            }
+            p{
+              position: relative;
+              top: -30px;
+              font-size: 15px;
+            }
+            .hidden {
+                display: none;
+            }
+            #tile_container {
+                width: 400px;
+                margin: auto;
+            }
+
+            #tile_container img {
+                width: 100px;
+            }
+            #button_playgame{
+              width: 130px;
+              height: 60px;
+              font-weight: bold;
+              position: relative;
+              font-size: 20px;
+              top: 120px;
+            }
+            #timer_container{
+              padding: 10px;
+              position: relative;
+              top: -50px;
+            }
+            #end{
+              font-family: serif;
+              font-size: 40px;
+              padding: 40px;
+            }
+            #panel_gameover{
+              text-align: center;
+            }
+            #leaderboard{
+              position: absolute;
+              top: 45vh;
+              left: 19vw;
+            }
+            .column{
+                float:left;
+                margin-left:20px;
+                text-align: center;
+                padding-left: 20px;
+                padding-right: 20px;
+                border: 2px solid yellow;
+            }
+            .a{
+              width: 100px;
+              height: 30px;
+              font-weight: bold;
+              position: absolute;
+              font-size: 10px;
+              top: 35vh;
+              left: 37vw;
+            }
+            .b{
+              width: 100px;
+              height: 30px;
+              font-weight: bold;
+              position: absolute;
+              font-size: 10px;
+              top: 35vh;
+              left: 56vw;
+            }
+
+            .center {
+              position: relative;
+              top: -100px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100vh;
+            }
+            .btn {
+              display: inline-block;
+              padding-top: 0px;
+              width: 110px;
+              height: 110px;
+              border-radius: 50%;
+              background-color: #4CAF50;
+              color: white;
+              font-size: 24px;
+              font-weight: bold;
+              text-align: center;
+              line-height: 100px;
+              margin: 0 10px;
+              cursor: pointer;
+            }
+
+        </style>
+    </head>
+    <body>
+        <h1>Memory Matching Madness</h1>
+
+        <!--Game Start Board-->
+        <div id="panel_gamestart">
+            <p>Play a fast-paced of "memory" and try to beat your best time!</p>
+
+            <div class="center">
+              <button class="btn" id="easy">Easy</button>
+              <button class="btn" id="medium">Medium</button>
+              <button class="btn" id="hard">Hard</button>
+            </div>
+        </div>
+
+        <!--Game Play Board-->
+        <div id="panel_gameplaying" class="hidden">
+            <div id="timer_container">Time: 0</div>
+            <div id="tile_container"></div>
+        </div>
+
+        <!--Game over Board-->
+        <div id="panel_gameover" class='hidden'>
+                  <button type="button" class="a">Restart</button>
+                  <button type="button" class ="b">Leaderboard</button>
+                  <div class="result">
+                    <p id="end">Game over!</p>
+                    <p id="yourtime">Your time: </p>
+                    <p id="besttime">Best time: </p>
+                  </div>
+                    <div class="hidden" id="leaderboard">
+                      <div class="column">
+                        <h3>Easy Mode Record</h3>
+                        <img src="images/guess2.png" alt="">
+                        <p id="username_easy">Username: </p>
+                        <p id="besttime_easy">Best Time: </p>
+                      </div>
+                      <div class="column">
+                        <h3>Medium Mode Record</h3>
+                        <img src="images/guess3.png" alt="">
+                        <p id="username_medium">Username: </p>
+                        <p id="besttime_medium">Best Time: </p>
+                      </div>
+                      <div class="column">
+                        <h3>Hard Mode Record</h3>
+                        <img src="images/guess4.png" alt="">
+                        <p id="username_hard">Username: </p>
+                        <p id="besttime_hard">Best Time: </p>
+                      </div>
+                </div>
+                <div id="record_break" class="hidden">
+                  Input Your Name:
+                  <input type="text" name="" value="" id="username">
+                  <button type="button" name="button" id="submit">Submit</button>
+                </div>
+        </div>
+
+
+        <audio id="correct-sound" src="images/correct.wav"></audio>
+        <audio id="incorrect-sound" src="images/wrong.wav"></audio>
+
+        <script>
+            // DOM queries
+            const panel_gamestart = document.querySelector('#panel_gamestart');
+            const button_playgame = document.querySelector('#button_playgame');
+            const panel_gameplaying = document.querySelector('#panel_gameplaying');
+            const timer_container = document.querySelector('#timer_container');
+            const tile_container = document.querySelector('#tile_container');
+            const panel_gameover = document.querySelector('#panel_gameover');
+            const restart = document.querySelector('.a');
+            const yourtime = document.querySelector('#yourtime');
+            const besttime = document.querySelector('#besttime');
+            const leaderboard = document.querySelector('#leaderboard');
+            const display_leaderboard = document.querySelector('.b');
+            const result = document.querySelector('.result');
+            const record_break = document.querySelector('#record_break');
+            const submit = document.querySelector('#submit');
+
+            var opening = document.getElementsByTagName("audio")[0];
+            var correctSound = document.getElementById("correct-sound");
+            var incorrectSound = document.getElementById("incorrect-sound");
+
+            //level selection
+            const easy_btn = document.querySelector('#easy');
+            const medium_btn = document.querySelector('#medium');
+            const hard_btn = document.querySelector('#hard');
+
+
+            console.log(correctSound);
+
+
+            // global variables to keep track of our picked tiles
+            let tile1 = false;
+            let tile2 = false;
+
+            //set up gameon；
+            let matches = 0;
+            let gameon = true;
+
+            //set up stickness and best score
+            if(localStorage.getItem('stickyness') == "Easy"){
+              easy_btn.style.backgroundColor = "#136360";
+            }
+            else if(localStorage.getItem('stickyness') == "Medium"){
+              medium_btn.style.backgroundColor = "#136360";
+            }
+            else if(localStorage.getItem('stickyness') == "Hard"){
+              hard_btn.style.backgroundColor = "#136360";
+            }
+
+            //set up best score
+            var best_easy = localStorage.getItem("best-time-easy");
+            if (!best_easy) {
+              best_easy=1000000000000;
+            }
+
+          //   if (best_easy) {
+          //   localStorage.setItem('best-time-easy', best_easy);
+          // }
+          var best_medium = localStorage.getItem("best-time-medium");
+          if(!best_medium){
+            best_medium = 10000000000000000;
+          }
+            // let best_medium = 1000000000000000000000000000000;
+            // localStorage.setItem('best-time-medium', best_medium);
+            var best_hard = localStorage.getItem("best-time-hard");
+            if(!best_hard){
+              best_hard = 10000000000000;
+            }
+            // let best_hard = 1000000000000000000000000000000;
+            // localStorage.setItem('best-time-hard', best_hard);
+
+            // let record_easy_name = '';
+            // let record_easy_time = 0;
+            var record_easy_name = localStorage.getItem('record_easy_name');
+            var record_easy_time = localStorage.getItem('record_easy_time');
+            // if(!(record_easy_name||record_easy_time)){
+            //   record_easy_name = '';
+            //   record_easy_time = 0;
+            // }
+            // let record_medium_name = '';
+            // let record_medium_time = 0;
+
+
+            var record_medium_name = localStorage.getItem('record_medium_name');
+            var record_medium_time = localStorage.getItem('record_medium_time');
+            // if(!(record_medium_name||record_medium_time)){
+            //   record_medium_name = '';
+            //   record_medium_time = 0;
+            // }
+            // localStorage.setItem('record_medium_name', record_medium_name);
+            // localStorage.setItem('record_medium_time', record_medium_time);
+            // let record_hard_name = '';
+            // let record_hard_time = 0;
+            var record_hard_name = localStorage.getItem('record_hard_name');
+            var record_hard_time = localStorage.getItem('record_hard_time');
+            // if(!(record_hard_name||record_hard_time)){
+            //   record_hard_name = '';
+            //   record_hard_time = 0;
+            // }
+            // localStorage.setItem('record_hard_name', record_hard_name);
+            // localStorage.setItem('record_hard_time', record_hard_time);
+            username_easy.innerText = "Username: "+localStorage.getItem('record_easy_name');
+            besttime_easy.innerText = "Best Time: "+localStorage.getItem('record_easy_time');
+            username_medium.innerText = "Username: "+localStorage.getItem('record_medium_name');
+            besttime_medium.innerText = "Best Time: "+localStorage.getItem('record_medium_time');
+            username_hard.innerText = "Username: "+localStorage.getItem('record_hard_name');
+            besttime_hard.innerText = "Best Time: "+localStorage.getItem('record_hard_time');
+            //set up the timer
+            let time = 0;
+            let timerId;
+
+            function playCorrectSound() {
+                correctSound.play();
+              }
+            function playIncorrectSound() {
+                incorrectSound.play();
+            }
+
+            display_leaderboard.onclick = function(){
+              leaderboard.classList.remove('hidden');
+              result.classList.add('hidden');
+              record_break.classList.add('hidden');
+            }
+
+            display_leaderboard.addEventListener("dblclick", (event) => {
+              result.classList.remove('hidden');
+              leaderboard.classList.add('hidden');
+            });
+
+
+            function startTimer() {
+              timerId = setInterval(() => {
+                time++;
+                timer_container.innerText = "Time: "+time;
+              }, 1000);
+            }
+
+            function stopTimer() {
+              clearInterval(timerId);
+            }
+
+
+            restart.onclick = function(e){
+              if(localStorage.getItem('stickyness') == "Easy"){
+                easy_btn.style.backgroundColor = "#136360";
+              }
+              else if(localStorage.getItem('stickyness') == "Medium"){
+                medium_btn.style.backgroundColor = "#136360";
+              }
+              else if(localStorage.getItem('stickyness') == "Hard"){
+                hard_btn.style.backgroundColor = "#136360";
+              }
+              leaderboard.classList.add('hidden');
+              result.classList.remove('hidden');
+              tile_container.innerText="";
+              tile1 = false;
+              tile2 = false;
+              matches = 0;
+              gameon = true;
+              panel_gameover.classList.add("hidden");
+              panel_gamestart.classList.remove("hidden");
+            };
+
+
+
+            easy_btn.onclick = startthegame_easy;
+            medium_btn.onclick = startthegame_medium;
+            hard_btn.onclick = startthegame_hard;
+
+            function startthegame_easy(e) {
+              localStorage.setItem('stickyness', "Easy");
+
+                medium_btn.style.backgroundColor = "#4CAF50";
+                hard_btn.style.backgroundColor = "#4CAF50";
+
+              tile_container.style.width = "400px";
+                opening.pause();
+                panel_gamestart.classList.add('hidden');
+                panel_gameplaying.classList.remove('hidden');
+                startTimer()
+
+
+                let assets = ['snorlax.png', 'electrabuzz.png', 'chansey.png', 'oddish.png',
+                            'pikachu.png', 'paras.png', 'arcanine.png', 'ponita.png',
+                            'venonat.png', 'eggsecute.png', 'machop.png', 'pidgey.png',
+                            'psyduck.png', 'tauros.png', 'vulpix.png', 'gloom.png',
+                            'krabby.png', 'butterfree.png', 'bulbasaur.png', 'clefairy.png',
+                            'koffing.png', 'goldeen.png', 'magikarp.png', 'beedrill.png',
+                            'lapras.png', 'meowth.png', 'ekans.png', 'jigglypuff.png',
+                            'horsea.png', 'polywog.png', 'sandshrew.png', 'rattata.png',
+                            'gengar.png', 'eevee.png', 'bellsprout.png', 'squirtle.png',
+                            'seel.png', 'caterpie.png'];
+
+                // pick 6 graphics at random
+
+
+                let selectedTiles = [];
+
+                while (selectedTiles.length < 12) {
+                    // pick a random one from the assets array
+                    let i = parseInt( Math.random() * assets.length );
+                    selectedTiles.push(assets[i]);
+                    selectedTiles.push(assets[i]);
+                    assets.splice(i, 1);
+                }
+
+                // you need to randomize these tiles so they are all messed up
+                for (let i = selectedTiles.length - 1; i > 0; i--) {
+                  const j = Math.floor(Math.random() * (i + 1));
+                  [selectedTiles[i], selectedTiles[j]] = [selectedTiles[j], selectedTiles[i]];
+                }
+
+
+                // create tiles for these graphics
+                for (let i = 0; i < selectedTiles.length; i++) {
+                    // create a tile
+                    let tile = document.createElement('img');
+                    tile.src = 'images/pokeball.png';
+                    tile.dataset.secret = 'images/' + selectedTiles[i];
+                    tile.dataset.matched = 1;
+                    tile.dataset.clicked = 0;
+                    tile_container.appendChild(tile);
+
+
+                    // set up event listeners on each tile
+                    tile.onclick = function(event) {
+
+                      //if we still continues the game, the tile selected has not been matched, and not been clicked before
+                      if(gameon && (tile.dataset.matched == 1)) {
+                        event.currentTarget.dataset.clicked = 1;
+                        //if we get enought matches, game stop, and display end panel
+
+                        // have no tiles been clicked?
+                        if (tile1 == false && tile2 == false) {
+                            // reveal tile 1
+                            // switch graphics
+                            event.currentTarget.src = event.currentTarget.dataset.secret;
+
+                            // mark this as tile1
+                            tile1 = event.currentTarget;
+                        }
+                        else if (tile2 == false&&(event.currentTarget!=tile1)) {
+                            // reveal this tile
+                            // switch graphics
+                            event.currentTarget.src = event.currentTarget.dataset.secret;
+
+                            // mark this as tile1
+                            tile2 = event.currentTarget;
+
+                            // did they get it right?
+                            if (tile1.dataset.secret == tile2.dataset.secret) {
+                                // reset the game back to the original state and allow more clicks
+                              playCorrectSound();
+                              tile1.dataset.matched = 0;
+                              tile2.dataset.matched = 0;
+
+                                tile1 = false;
+                                tile2 = false;
+                                matches+=1;
+                                console.log("we have"+matches);
+
+                                if (matches == 6) {
+                                  stopTimer()
+                                  console.log("end!")
+                                  gameon = false;
+                                  panel_gameplaying.classList.add('hidden');
+                                  panel_gameover.classList.remove('hidden');
+                                  yourtime.innerText = "Your Time: "+time;
+                                  if(time<best_easy){
+                                    best_easy = time;
+                                    localStorage.setItem('best-time-easy', best_easy);
+
+                                    record_break.classList.remove('hidden');
+                                    submit.onclick = function(){
+                                      //grab value and container
+                                      var username = document.querySelector('#username');
+                                      var username_easy= document.querySelector('#username_easy');
+                                      var besttime_easy = document.querySelector('#besttime_easy');
+                                      record_break.classList.add('hidden');
+
+                                      record_easy_name = username.value;
+                                      localStorage.setItem('record_easy_name', record_easy_name);
+                                      localStorage.setItem('record_easy_time', best_easy);
+
+                                  }
+                                }
+                                username_easy.innerText = "Username: "+localStorage.getItem('record_easy_name');
+                                besttime_easy.innerText = "Best Time: "+localStorage.getItem('record_easy_time');
+                                besttime.innerText = "Best Time: "+ localStorage.getItem('best-time-easy');
+                                time = 0;
+                            }
+                          }
+                            else {
+                                // they got it wrong
+                                playIncorrectSound();
+
+                                setTimeout( function() {
+                                    tile1.src = 'images/pokeball.png';
+                                    tile2.src = 'images/pokeball.png';
+                                    tile1.dataset.clicked = 0;
+                                    tile2.dataset.clicked = 0;
+                                    tile1 = false;
+                                    tile2 = false;
+                                }, 1000);
+                            }
+                        }
+
+
+
+                        //tile.src = tile.dataset.secret;
+
+                      }
+                    }
+                }
+
+            }
+
+            function startthegame_medium(e) {
+
+              localStorage.setItem('stickyness', "Medium");
+              easy_btn.style.backgroundColor = "#4CAF50";
+              hard_btn.style.backgroundColor = "#4CAF50";
+              tile_container.style.width = "500px";
+                opening.pause();
+                panel_gamestart.classList.add('hidden');
+                panel_gameplaying.classList.remove('hidden');
+                startTimer()
+
+
+                let assets = ['snorlax.png', 'electrabuzz.png', 'chansey.png', 'oddish.png',
+                            'pikachu.png', 'paras.png', 'arcanine.png', 'ponita.png',
+                            'venonat.png', 'eggsecute.png', 'machop.png', 'pidgey.png',
+                            'psyduck.png', 'tauros.png', 'vulpix.png', 'gloom.png',
+                            'krabby.png', 'butterfree.png', 'bulbasaur.png', 'clefairy.png',
+                            'koffing.png', 'goldeen.png', 'magikarp.png', 'beedrill.png',
+                            'lapras.png', 'meowth.png', 'ekans.png', 'jigglypuff.png',
+                            'horsea.png', 'polywog.png', 'sandshrew.png', 'rattata.png',
+                            'gengar.png', 'eevee.png', 'bellsprout.png', 'squirtle.png',
+                            'seel.png', 'caterpie.png'];
+
+                // pick 6 graphics at random
+
+
+                let selectedTiles = [];
+
+                while (selectedTiles.length < 20) {
+                    // pick a random one from the assets array
+                    let i = parseInt( Math.random() * assets.length );
+                    selectedTiles.push(assets[i]);
+                    selectedTiles.push(assets[i]);
+                    assets.splice(i, 1);
+                }
+
+                // you need to randomize these tiles so they are all messed up
+                // for (let i = selectedTiles.length - 1; i > 0; i--) {
+                //   const j = Math.floor(Math.random() * (i + 1));
+                //   [selectedTiles[i], selectedTiles[j]] = [selectedTiles[j], selectedTiles[i]];
+                // }
+
+
+                // create tiles for these graphics
+                for (let i = 0; i < selectedTiles.length; i++) {
+                    // create a tile
+                    let tile = document.createElement('img');
+                    tile.src = 'images/pokeball.png';
+                    tile.dataset.secret = 'images/' + selectedTiles[i];
+                    tile.dataset.matched = 1;
+                    tile.dataset.clicked = 0;
+                    tile_container.appendChild(tile);
+
+
+                    // set up event listeners on each tile
+                    tile.onclick = function(event) {
+
+                      if(gameon && (tile.dataset.matched == 1)) {
+                        //if we get enought matches, game stop, and display end panel
+                        event.currentTarget.dataset.clicked = 1;
+                        // have no tiles been clicked?
+                        if (tile1 == false && tile2 == false) {
+                            // reveal tile 1
+                            // switch graphics
+                            event.currentTarget.src = event.currentTarget.dataset.secret;
+
+                            // mark this as tile1
+                            tile1 = event.currentTarget;
+                        }
+                        else if (tile2 == false&&(event.currentTarget!=tile1)) {
+                            // reveal this tile
+                            // switch graphics
+                            event.currentTarget.src = event.currentTarget.dataset.secret;
+
+                            // mark this as tile1
+                            tile2 = event.currentTarget;
+
+                            // did they get it right?
+                            if (tile1.dataset.secret == tile2.dataset.secret) {
+                                    // reset the game back to the original state and allow more clicks
+                                  playCorrectSound();
+                                  tile1.dataset.matched = 0;
+                                  tile2.dataset.matched = 0;
+
+                                tile1 = false;
+                                tile2 = false;
+                                matches+=1;
+                                console.log("we have"+matches);
+
+                                if (matches == 10) {
+                                  stopTimer()
+                                  console.log("end!")
+                                  gameon = false;
+                                  panel_gameplaying.classList.add('hidden');
+                                  panel_gameover.classList.remove('hidden');
+                                  yourtime.innerText = "Your Time: "+time;
+
+                                  //if break the medium record
+                                  if(time<best_medium){
+                                    best_medium = time;
+                                    localStorage.setItem('best-time-medium', best_medium);
+
+                                    record_break.classList.remove('hidden');
+                                    submit.onclick = function(){
+                                      //grab value and container
+                                      var username = document.querySelector('#username');
+                                      var username_medium = document.querySelector('#username_medium');
+                                      var besttime_medium = document.querySelector('#besttime_medium');
+                                      record_break.classList.add('hidden');
+
+                                      record_medium_name = username.value;
+                                      localStorage.setItem('record_medium_name', record_medium_name);
+                                      localStorage.setItem('record_medium_time', best_medium);
+
+                                  }
+                                }
+                                username_medium.innerText = "Username: "+localStorage.getItem('record_medium_name');
+                                besttime_medium.innerText = "Best Time: "+localStorage.getItem('record_medium_time');
+                                besttime.innerText = "Best Time: "+ localStorage.getItem('best-time-medium');
+                                time = 0;
+
+                            }
+                          }
+                            else {
+                                // they got it wrong
+                                playIncorrectSound();
+                                setTimeout( function() {
+                                    tile1.src = 'images/pokeball.png';
+                                    tile2.src = 'images/pokeball.png';
+                                    tile1.dataset.clicked = 0;
+                                    tile2.dataset.clicked = 0;
+                                    tile1 = false;
+                                    tile2 = false;
+                                }, 1000);
+                            }
+                        }
+
+
+
+                        //tile.src = tile.dataset.secret;
+
+                      }
+                    }
+                }
+
+            }
+
+            function startthegame_hard(e) {
+              localStorage.setItem('stickyness', "Hard");
+              easy_btn.style.backgroundColor = "#4CAF50";
+              medium_btn.style.backgroundColor = "#4CAF50";
+                tile_container.style.width = "600px";
+                opening.pause();
+                panel_gamestart.classList.add('hidden');
+                panel_gameplaying.classList.remove('hidden');
+                startTimer()
+
+
+                let assets = ['snorlax.png', 'electrabuzz.png', 'chansey.png', 'oddish.png',
+                            'pikachu.png', 'paras.png', 'arcanine.png', 'ponita.png',
+                            'venonat.png', 'eggsecute.png', 'machop.png', 'pidgey.png',
+                            'psyduck.png', 'tauros.png', 'vulpix.png', 'gloom.png',
+                            'krabby.png', 'butterfree.png', 'bulbasaur.png', 'clefairy.png',
+                            'koffing.png', 'goldeen.png', 'magikarp.png', 'beedrill.png',
+                            'lapras.png', 'meowth.png', 'ekans.png', 'jigglypuff.png',
+                            'horsea.png', 'polywog.png', 'sandshrew.png', 'rattata.png',
+                            'gengar.png', 'eevee.png', 'bellsprout.png', 'squirtle.png',
+                            'seel.png', 'caterpie.png'];
+
+                // pick 6 graphics at random
+
+
+                let selectedTiles = [];
+
+                while (selectedTiles.length < 30) {
+                    // pick a random one from the assets array
+                    let i = parseInt( Math.random() * assets.length );
+                    selectedTiles.push(assets[i]);
+                    selectedTiles.push(assets[i]);
+                    assets.splice(i, 1);
+                }
+
+                // you need to randomize these tiles so they are all messed up
+                // for (let i = selectedTiles.length - 1; i > 0; i--) {
+                //   const j = Math.floor(Math.random() * (i + 1));
+                //   [selectedTiles[i], selectedTiles[j]] = [selectedTiles[j], selectedTiles[i]];
+                // }
+
+
+                // create tiles for these graphics
+                for (let i = 0; i < selectedTiles.length; i++) {
+                    // create a tile
+                    let tile = document.createElement('img');
+                    tile.src = 'images/pokeball.png';
+                    tile.dataset.secret = 'images/' + selectedTiles[i];
+                    tile.dataset.matched = 1;
+                    tile.dataset.clicked = 0;
+                    tile_container.appendChild(tile);
+
+
+                    // set up event listeners on each tile
+                    tile.onclick = function(event) {
+
+
+                      if(gameon && (tile.dataset.matched == 1)) {
+                        //if we get enought matches, game stop, and display end panel
+                        event.currentTarget.dataset.clicked = 1;
+                        // have no tiles been clicked?
+                        if (tile1 == false && tile2 == false) {
+                            // reveal tile 1
+                            // switch graphics
+                            event.currentTarget.src = event.currentTarget.dataset.secret;
+
+                            // mark this as tile1
+                            tile1 = event.currentTarget;
+                        }
+                        else if (tile2 == false &&(event.currentTarget!=tile1)) {
+                            // reveal this tile
+                            // switch graphics
+                            event.currentTarget.src = event.currentTarget.dataset.secret;
+
+                            // mark this as tile1
+                            tile2 = event.currentTarget;
+
+                            // did they get it right?
+                              if (tile1.dataset.secret == tile2.dataset.secret) {
+                                      // reset the game back to the original state and allow more clicks
+                                    playCorrectSound();
+                                    tile1.dataset.matched = 0;
+                                    tile2.dataset.matched = 0;
+
+                                tile1 = false;
+                                tile2 = false;
+                                matches+=1;
+                                console.log("we have"+matches);
+
+                                if (matches == 15) {
+                                  stopTimer()
+                                  console.log("end!")
+                                  gameon = false;
+                                  panel_gameplaying.classList.add('hidden');
+                                  panel_gameover.classList.remove('hidden');
+                                  yourtime.innerText = "Your Time: "+time;
+                                  if(time<best_hard){
+                                    best_hard = time;
+                                    localStorage.setItem('best-time-hard', best_hard);
+
+                                    record_break.classList.remove('hidden');
+                                    submit.onclick = function(){
+                                      //grab value and container
+                                      var username = document.querySelector('#username');
+                                      var username_hard = document.querySelector('#username_hard');
+                                      var besttime_hard = document.querySelector('#besttime_hard');
+                                      record_break.classList.add('hidden');
+
+                                      record_hard_name = username.value;
+                                      localStorage.setItem('record_hard_name', record_hard_name);
+                                      localStorage.setItem('record_hard_time', best_hard);
+
+                                  }
+                                }
+                                username_hard.innerText = "Username: "+localStorage.getItem('record_hard_name');
+                                besttime_hard.innerText = "Best Time: "+localStorage.getItem('record_hard_time');
+                                besttime.innerText = "Best Time: "+ localStorage.getItem('best-time-hard');
+                                time = 0;
+                                }
+                            }
+                            else {
+                                // they got it wrong
+                                playIncorrectSound();
+                                setTimeout( function() {
+                                    tile1.src = 'images/pokeball.png';
+                                    tile2.src = 'images/pokeball.png';
+                                    tile1.dataset.clicked = 0;
+                                    tile2.dataset.clicked = 0;
+                                    tile1 = false;
+                                    tile2 = false;
+                                }, 1000);
+                            }
+                        }
+
+
+
+                        //tile.src = tile.dataset.secret;
+
+                      }
+                    }
+                }
+              }
+
+
+
+        </script>
+    </body>
+</html>

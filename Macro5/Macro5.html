@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Seasonal To-Do List</title>
+        <style>
+            body {
+                background-image: url('images/corkboard.jpg');
+            }
+
+            #add_item {
+                position: absolute;
+                bottom: 20px;
+                right: 20px;
+            }
+
+            #add_item_hover {
+                position: absolute;
+                height:80%;
+                width:80%;
+            }
+
+            #season_filter {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+            }
+            #panel_add_new_item {
+                border-radius: 25px;
+                border: 5px solid #73AD21;
+                padding: 20px;
+                width: 500px;
+                height: 250px;
+                background-color: white;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                margin-left: -280px;
+                margin-top: -125px;
+                z-index: 1;
+            }
+
+            .edit_panel{
+              border-radius: 25px;
+              border: 5px solid black;
+              padding: 20px;
+              width: 500px;
+              height: 250px;
+              background-color: #c9c0d3;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              margin-left: -280px;
+              margin-top: -125px;
+              z-index: 1;
+            }
+            .hidden {
+                display: none;
+            }
+            .error {
+                background-color: red;
+                color: white;
+            }
+            .item {
+                border-radius: 10px;
+                width: 150px;
+                height: 150px;
+                float: left;
+                margin-right: 20px;
+                margin-top:20px;
+                padding: 10px;
+                position:relative;
+            }
+            .winter {
+                background-color: rgb(193, 203, 215);
+            }
+            .spring {
+                background-color: rgb(224, 205, 207);
+            }
+            .summer {
+                background-color: rgb(215, 202, 175);
+            }
+            .fall {
+                background-color: rgb(162, 126, 126);
+            }
+            #font{
+              font-family: 'Times New Roman', Times, serif;
+            }
+            .close{
+              position: absolute;
+              top: -5px;
+              right: -5px;
+            }
+            .complete{
+              width:20px;
+              height:20px;
+              position: absolute;
+              top: -5px;
+              right: 20px;
+            }
+
+            .undo{
+              width:20px;
+              height:20px;
+              position: absolute;
+              top: -5px;
+              right: 45px;
+            }
+
+            .edit{
+              position: absolute;
+              height: auto;
+              width: auto;
+              left: 20px;
+              bottom: 20px;
+              width: 80px;
+              height: 30px;
+              border-radius: 5px;
+              font-size: 10px;
+              font-family: 'Times New Roman', Times, serif;
+              background-color: white;
+              border: 2px solid black;
+            }
+
+            .info{
+              border-radius: 25px;
+              border: 5px solid #d8caaf;
+              padding: 20px;
+              width: 500px;
+              height: 250px;
+              background-color: rgba(255,255,255,0.7);
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              margin-left: -280px;
+              margin-top: -125px;
+            }
+
+            .close_info{
+              position: absolute;
+              height: auto;
+              width: auto;
+              left: 140px;
+              bottom: 20px;
+              width: 80px;
+              height: 30px;
+              border-radius: 5px;
+              font-size: 10px;
+              font-family: 'Times New Roman', Times, serif;
+              background-color: white;
+              border: 2px solid black;
+            }
+
+
+        </style>
+    </head>
+    <div class="head">
+      <h1 id="font">Seasonal To-Do List</h1>
+    </div>
+    <body>
+
+        <select id="season_filter">
+            <option value="all">Show all seasons</option>
+            <option value="winter">Winter</option>
+            <option value="spring">Spring</option>
+            <option value="summer">Summer</option>
+            <option value="fall">Fall</option>
+            <option value="Complete">Complete</option>
+            <option value="Incomplete">Incomplete</option>
+        </select>
+
+        <img id="add_item" src="images/add_button.png">
+
+        <div id="panel_add_new_item" class="hidden">
+            <h2>Add new Item</h2>
+
+            <div class="error hidden" id="add_error">Please fill out all of the form fields!</div>
+
+            <form id="add_panel">
+                <label for="title">Title</label><br>
+                <input type="text" id="title"><br>
+
+                <label for="category">Category</label><br>
+                <select id="category">
+                    <option value="winter">Winter</option>
+                    <option value="spring">Spring</option>
+                    <option value="summer">Summer</option>
+                    <option value="fall">Fall</option>
+                </select><br>
+
+                <label for="description">Description</label><br>
+                <textarea id="description"></textarea><br>
+
+                <button id="add_save">Save</button>
+                <button id="add_cancel">Cancel</button>
+            </form>
+        </div>
+
+        <div id="edit_panel" class="hidden edit_panel" >
+          <h2>Edit the Item</h2>
+          <form id ="editpanel">
+              <label for="title">Title</label><br>
+              <input type="text" id="title_edit"><br>
+
+              <label for="category">Category</label><br>
+              <select id="category_edit">
+                  <option value="winter">Winter</option>
+                  <option value="spring">Spring</option>
+                  <option value="summer">Summer</option>
+                  <option value="fall">Fall</option>
+              </select><br>
+
+              <label for="description">Description</label><br>
+              <textarea id="description_edit"></textarea><br>
+
+              <button id="add_save_edit">Save</button>
+              <button id="add_cancel_edit">Cancel</button>
+          </form>
+
+        </div>
+
+        <div id="item_container">
+        </div>
+
+        <div class="info hidden">
+          <h2 id="info_title"> </h2>
+          <p id="season"></p>
+          <p id="info_description"></p>
+          <hr>
+          <p id="created">Created: </p>
+          <p id="last_accessed">Last accessed: </p>
+          <button type="button" name="button" class="edit" id="edit">Click to edit</button>
+          br
+          <button id="close_info" class="close_info">Close</button>
+
+
+        </div>
+
+
+
+
+
+        <script>
+            // dom queries
+            const panel_add_new_item = document.querySelector("#panel_add_new_item");
+            const add_item = document.querySelector("#add_item");
+            const add_cancel = document.getElementById('add_cancel');
+            const add_save = document.getElementById('add_save');
+            const add_error = document.getElementById('add_error');
+
+            //grab the edit panel features
+            const edit = document.querySelector("#edit");
+            const edit_panel = document.querySelector("#edit_panel");
+            const add_cancel_edit = document.getElementById('add_cancel_edit');
+            const add_save_edit = document.getElementById('add_save_edit');
+
+
+            const item_container = document.getElementById('item_container');
+            const info = document.querySelector('.info');
+            const season_filter = document.getElementById("season_filter");
+
+
+            let title_edit = document.querySelector('#title_edit').value;
+            let description_edit = document.querySelector('#description_edit').value;
+            let category_edit = document.querySelector('#category_edit').value;
+
+
+
+
+
+
+            add_item.addEventListener("mouseover", (event) => {
+              add_item.style.width = "40px";
+              add_item.style.height = "40px";
+            });
+
+            add_item.addEventListener("mouseout", (event) => {
+              add_item.style.width = "50px";
+              add_item.style.height = "50px";
+            });
+
+            // when the user clicks on the + button trigger the panel to appear
+            add_item.onclick = function(e) {
+                panel_add_new_item.classList.remove('hidden');
+                season_filter.value = "all";
+
+                //change the previously hidden items to be visible
+                let allItem = document.querySelectorAll('.item');
+                for(i = 0 ; i < allItem.length;i++){
+                    allItem[i].classList.remove('hidden');
+                }
+
+                // erase the form
+                document.querySelector('#title').value = '';
+                document.querySelector('#description').value = '';
+                document.querySelector('#category').value = 'winter';
+            }
+
+            add_cancel.onclick = function(e) {
+                e.preventDefault();
+                add_error.classList.add('hidden');
+
+                //if user click cancel, remove the error message.
+                panel_add_new_item.classList.add('hidden');
+            }
+
+            add_save.onclick = function(e) {
+                e.preventDefault();
+
+                // grab the title, description, category, created date
+                let t = document.querySelector('#title').value;
+                let d = document.querySelector('#description').value;
+                let c = document.querySelector('#category').value;
+                let date = new Date();
+                let minute = date.getMinutes();
+                let itemCreated = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+ ":"+(minute<10?'0':'')+minute;
+
+
+                // if we do have all 3, create the to-do item
+                if (t && d && c) {
+                    add_error.classList.add('hidden');
+
+                    // create our new to-do item
+                    let item = document.createElement('div');
+                    let text = document.createTextNode(t);
+                    let close = document.createElement('img');
+                    let complete = document.createElement('img');
+                    let undo = document.createElement('img');
+                    // let edit = document.createElement('button');
+
+                    item.appendChild(text);
+
+                    // edit.innerHTML = "Click to Edit";
+                    // edit.classList.add('edit');
+
+                    item.classList.add('item');
+                    item.innerText = t;
+                    item.classList.add(c);
+
+                    //add close button for the item
+                    close.src = "images/delete_button.png";
+                    close.classList.add('close');
+                    close.classList.add('hidden');
+
+                    //add complete button for the item
+                    complete.src = "images/check.svg";
+                    complete.classList.add("complete");
+                    complete.classList.add('hidden');
+
+                    //add undo button;
+                    undo.src = "images/undo.svg";
+                    undo.classList.add("undo");
+                    undo.classList.add('hidden');
+
+
+                    item.appendChild(close);
+                    item.appendChild(complete);
+                    item.appendChild(undo);
+                    // item.appendChild(edit);
+                    item_container.appendChild(item);
+
+                    //add close feature to remove the item from List
+                    close.addEventListener("click", (event) => {
+                      item_container.removeChild(item);
+                      event.stopPropagation();
+                    });
+
+                    //mark the event as complete
+                    complete.addEventListener("click", (event) => {
+                      item.style.opacity="0.5";
+                      item.dataset.status = "Complete";
+                      undo.classList.remove("hidden");
+                      event.stopPropagation();
+                    });
+
+                    //mark the event as incomplete
+                    undo.addEventListener("click", (event) => {
+                      event.stopPropagation();
+                      item.style.opacity="1";
+                      item.dataset.status = "Incomplete";
+                      undo.classList.add("hidden");
+                    });
+
+                    //edit the text
+                    // edit.addEventListener("click", (event) => {
+                    //   event.stopPropagation();
+                    //   edit_panel.classList.remove('hidden');
+                    //
+                    //   title_edit = "";
+                    //
+                    // });
+                    // add_save_edit.addEventListener("click", (event) => {
+                    //   event.preventDefault();
+                    //   event.stopPropagation();
+                    //
+                    //   console.log(item.childNodes);
+                    //
+                    //   let t_new = document.querySelector('#title_edit').value;
+                    //   let d_new = document.querySelector('#description_edit').value;
+                    //   let c_new = document.querySelector('#category_edit').value;
+                    //
+                    //   console.log(this);
+                    //
+                    //   item.dataset.title = t_new;
+                    //   item.dataset.description = d_new;
+                    //   item.dataset.category = c_new;
+                    //
+                    //
+                    //   const textNode = item.childNodes[0];
+                    //   textNode.textContent = t_new;
+                    //
+                    //   if(c_new != c){
+                    //     item.classList.remove(c);
+                    //     item.classList.add(c_new);
+                    //   }
+                    //   console.log(item.childNodes);
+                    //   edit_panel.classList.add("hidden");
+                    // });
+                    //
+                    //
+                    // add_cancel_edit.onclick = function(e) {
+                    //     e.preventDefault();
+                    //     add_error.classList.add('hidden');
+                    //     //if user click cancel, remove the error message.
+                    //     edit_panel.classList.add('hidden');
+                    // }
+                    //
+
+
+
+                    //add hover state for the item if they want to delete it.
+                    item.addEventListener("mouseover", (event) => {
+                      close.classList.remove('hidden');
+                      complete.classList.remove('hidden');
+
+                    });
+
+                    item.addEventListener("mouseout", (event) => {
+                      close.classList.add('hidden');
+                      complete.classList.add('hidden');
+                    });
+
+
+
+
+
+
+                    // have the item rememeber all the data it knows about itself
+                    item.dataset.title = t;
+                    item.dataset.description = d;
+                    item.dataset.category = c;
+                    item.dataset.itemCreated = itemCreated;
+                    item.dataset.status = "Incomplete";
+
+                    // set the item up so you can click on it
+                    item.onclick = function(event) {
+                      let accessed_date = new Date();
+                      let accessed_minute = date.getMinutes();
+                      let itemAccessed = accessed_date.getFullYear()+"-"+(accessed_date.getMonth()+1)+"-"+accessed_date.getDate()+" "+accessed_date.getHours()+ ":"+(accessed_minute<10?'0':'')+accessed_minute;
+                      item.dataset.itemAccessed = itemAccessed;
+
+
+
+                        console.log(event.currentTarget.dataset.title);
+                        console.log(event.currentTarget.dataset.description);
+                        console.log(event.currentTarget.dataset.category);
+
+                        info.classList.remove("hidden");
+                        //edit info_title,season,description,created, last_accessed,close_info;
+                        let info_title = document.getElementById('info_title');
+
+                        let season = document.getElementById('season');
+                        let info_description = document.getElementById('info_description');
+                        let created = document.getElementById('created');
+                        let last_accessed = document.getElementById('last_accessed');
+                        let close_info = document.getElementById('close_info');
+
+                        console.log(description);
+
+                        info_title.innerText = event.currentTarget.dataset.title;
+                        season.innerText = "Season: "+event.currentTarget.dataset.category;
+                        info_description.innerHTML ="Description: "+ event.currentTarget.dataset.description;
+                        created.innerHTML = "Created: "+event.currentTarget.dataset.itemCreated;
+                        last_accessed.innerHTML ="Last Accessed: "+ event.currentTarget.dataset.itemCreated;
+
+
+                        close_info.onclick=function(){
+                          info_title.innerText ="";
+                          season.innerText = "";
+                          info_description.innerHTML = "";
+                          created.innerHTML =  "";
+                          last_accessed.innerHTML = "";
+                          info.classList.add('hidden');
+                        }
+
+                        edit.addEventListener("click", (event) => {
+                          e.stopPropagation();
+                          edit_panel.classList.remove('hidden');
+
+                          title_edit = "";
+
+                        });
+                        add_save_edit.addEventListener("click", (event) => {
+                          event.preventDefault();
+                          event.stopPropagation();
+
+                          console.log(item.childNodes);
+
+                          let t_new = document.querySelector('#title_edit').value;
+                          let d_new = document.querySelector('#description_edit').value;
+                          let c_new = document.querySelector('#category_edit').value;
+
+                          console.log(this);
+
+                          this.dataset.title = t_new;
+                          this.dataset.description = d_new;
+                          this.dataset.category = c_new;
+
+
+                          const textNode = this.childNodes[0];
+                          textNode.textContent = t_new;
+
+                          if(c_new != c){
+                            this.classList.remove(c);
+                            this.classList.add(c_new);
+                          }
+                          console.log(item.childNodes);
+                          edit_panel.classList.add("hidden");
+                          info.classList.add("hidden");
+
+                        });
+
+
+                        add_cancel_edit.onclick = function(e) {
+                            e.preventDefault();
+                            add_error.classList.add('hidden');
+                            //if user click cancel, remove the error message.
+                            edit_panel.classList.add('hidden');
+                            info.classList.add("hidden");
+                        }
+
+
+                        }
+
+
+
+                    // close the add panel
+                    panel_add_new_item.classList.add('hidden');
+                }
+
+                // make sure we hvae all 3 -- if not, trigger the error message
+                else {
+                    add_error.classList.remove('hidden');
+                }
+
+
+                let allItem = document.querySelectorAll('.item');
+                console.log(allItem);
+
+
+                season_filter.onchange = function(event){
+                    let season = season_filter.value;
+                    if(season == "winter"){
+                      //hide all those are not winter
+                      console.log("winter!");
+                      console.log(allItem);
+                      for(let i = 0 ; i < allItem.length;i++){
+                          if(allItem[i].dataset.category != "winter"){
+                              allItem[i].classList.add('hidden');
+                          }
+                          else{
+                              allItem[i].classList.remove('hidden');
+                          }
+                      }
+                    }
+                    else if(season == "fall"){
+                      //hide all those are not fall
+                      console.log("fall!");
+                      console.log(allItem);
+                      for(let i = 0 ; i < allItem.length;i++){
+                          if(allItem[i].dataset.category != "fall"){
+                              allItem[i].classList.add('hidden');
+                          }
+                          else{
+                              allItem[i].classList.remove('hidden');
+                          }
+                      }
+
+                  }
+                  else if(season=="spring"){
+                    //hide all those are not spring
+                    console.log("spring!");
+                    console.log(allItem);
+                    for(let i = 0 ; i < allItem.length;i++){
+                        if(allItem[i].dataset.category != "spring"){
+                            allItem[i].classList.add('hidden');
+                        }
+                        else{
+                            allItem[i].classList.remove('hidden');
+                        }
+                    }
+            }
+            else if(season=="summer"){
+              //hide all those are not summer
+              console.log("summer!");
+              console.log(allItem);
+              for(let i = 0 ; i < allItem.length;i++){
+                  if(allItem[i].dataset.category != "summer"){
+                      allItem[i].classList.add('hidden');
+                  }
+                  else{
+                      allItem[i].classList.remove('hidden');
+                  }
+              }
+            }
+
+            else if(season=="Incomplete"){
+              for(let i = 0 ; i < allItem.length;i++){
+                  if(allItem[i].dataset.status != "Incomplete"){
+                      allItem[i].classList.add('hidden');
+                  }
+                  else{
+                      allItem[i].classList.remove('hidden');
+                  }
+              }
+            }
+
+            else if(season=="Complete"){
+              for(let i = 0 ; i < allItem.length;i++){
+                  if(allItem[i].dataset.status != "Complete"){
+                      allItem[i].classList.add('hidden');
+                  }
+                  else{
+                      allItem[i].classList.remove('hidden');
+                  }
+              }
+            }
+            else{
+              //change all to visible
+              for(let i = 0 ; i < allItem.length;i++){
+                  allItem[i].classList.remove('hidden');
+              }
+            }
+
+
+
+          }
+        }
+
+
+        </script>
+    </body>
+</html>
