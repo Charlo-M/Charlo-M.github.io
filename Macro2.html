@@ -1,0 +1,189 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Assignment 02</title>
+        <style>
+
+            #container {
+                width: 800px;
+                height: 600px;
+                margin: auto;
+                border: 5px solid black;
+                position: relative;
+            }
+            #background {
+                width: 100%;
+                height:100%;
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                z-index: 0;
+            }
+
+            #title {
+                position: absolute;
+                top: 20px;
+                left: 20px;
+                z-index: 1;
+                color: white;
+                font-weight: bold;
+            }
+            #infopanel {
+                position: absolute;
+                top: 100px;
+                left: 20px;
+                z-index: 1;
+                background-color: rgba(255, 255, 255, 0.5);
+                padding: 10px;
+                border-radius: 10px;
+            }
+            #body {
+                position: absolute;
+                bottom: 0px;
+                right: 200px;
+                z-index: 1;
+                width:20%;
+                height:30%;
+            }
+            #head {
+                position: absolute;
+                bottom: 180px;
+                right: 245px;
+                z-index: 1;
+                width:8.5%;
+                height:10%;
+              }
+
+            /* #deco{
+              position: absolute;
+              bottom: 180px;
+              right: 245px;
+              z-index: 2;
+              width:20%;
+              height:20%;
+
+            } */
+            .bow{
+              position: absolute;
+              bottom: 140px;
+              right: 245px;
+              z-index: 2;
+              width:8%;
+              height:8%;}
+            .hair1{
+              position: absolute;
+              bottom: 220px;
+              right: 230px;
+              z-index: 2;
+              width:12%;
+              height:12%;
+            }
+            .hair2{
+              position: absolute;
+              bottom: 140px;
+              right: 200px;
+              z-index: 2;
+              width:18%;
+              height:20%;
+            }
+
+
+        </style>
+    </head>
+    <body>
+
+        <div id="container">
+            <img id="deco" src="Assignment/decol/1.png">
+            <img id="head" src="Assignment/heads/head1.png">
+            <img id="body" src="Assignment/bodies/body1.png">
+            <img id="background" src="Assignment/backgrounds/afternoon.png">
+            <script>
+              //ask the user to pick a number
+              let number = prompt("Please enter a positive number greater than or equal to 3");
+              while (isNaN(number) || number<3) {
+                number = prompt("Please enter a positive number greater than or equal to 3");
+              }
+
+                const words = ['Awesome', 'Fantastic', 'Fabulous', 'Superb', 'Perfect', 'Brilliant', 'Coming up Roses'];
+                // pick a word at random
+                let i = parseInt( Math.random() * words.length );
+                let word = words[i];
+
+                // write out the H1 tag to use that word
+                document.write(`<h1 id="title">Everything is ${word}!</h1>`);
+
+
+
+                let rightNow = new Date();
+                let hour = rightNow.getHours();
+                let minute = rightNow.getMinutes();
+                var ampm = hour >= 12 ? 'pm' : 'am';
+                let welcome='';
+                let backgound = document.getElementById("background");
+                if (hour<=5){
+                  welcome = " - Good Night!";
+                  backgound.src = "Assignment/backgrounds/night.png"
+                }
+                else if(hour <=11){
+                  welcome = " - Good Morning!";
+                  backgound.src = "Assignment/backgrounds/morning.png"
+                }
+                else if(hour <=17){
+                  welcome = " - Good Afternoon!";
+                  backgound.src = "Assignment/backgrounds/afternoon.png"
+                }
+                else{
+                  welcome = " - Good Evening!";
+                  backgound.src = "Assignment/backgrounds/evening.png"
+                }
+
+
+                hour = hour % 12;
+                hour = hour ? hour : 12; // the hour '0' should be '12'
+                minute = minute < 10 ? '0'+minute : minute;
+                var strTime = hour + ':' + minute + ' ' + ampm + welcome;
+
+                //display lucky numbers
+                let arr = Array.from({length: number}, (_, i) => i + 1)
+                let result = [];
+
+                for(let i = 0; i<3; i++){
+                  let lucky = Math.floor(Math.random() * arr.length);
+                  result.push(arr[lucky]);
+                  console.log(arr);
+                  arr.splice(lucky,1);
+                }
+
+                //pick randon lego pic
+                let head = ["Assignment/heads/head1.png","Assignment/heads/head2.png","Assignment/heads/head3.png","Assignment/heads/head4.png","Assignment/heads/head5.png","Assignment/heads/head6.png"]
+                let body = ["Assignment/bodies/body1.png","Assignment/bodies/body2.png","Assignment/bodies/body3.png","Assignment/bodies/body4.png","Assignment/bodies/body5.png","Assignment/bodies/body6.png"]
+
+                let head_num = Math.floor(Math.random() * head.length);
+                let body_num = Math.floor(Math.random() * body.length);
+
+                document.getElementById("head").src = head[head_num];
+                document.getElementById("body").src = body[body_num];
+
+
+                let decol = ["Assignment/decol/1.png","Assignment/decol/3.png","Assignment/decol/4.png"];
+                let decol_num = Math.floor(Math.random() * decol.length);
+
+                let decoration = document.getElementById("deco")
+                decoration.src = decol[decol_num];
+                if(decol_num == 0){
+                  decoration.classList.add("bow");
+                }
+                else if(decol_num ==1){
+                  decoration.classList.add("hair1");
+                }
+                else{
+                  decoration.classList.add("hair2");
+                }
+
+                document.write(`<div id="infopanel">The current time is ${strTime}`);
+                document.write(`<p>Your three lucky numbers today are ${result[0]}, ${result[1]} and  ${result[2]}</p></div>`);
+            </script>
+        </div>
+
+    </body>
+</html>

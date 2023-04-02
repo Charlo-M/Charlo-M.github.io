@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>In class Day 06</title>
+        <style>
+            #left {
+                float: left;
+                width: 800px;
+                height: 600px;
+                position: relative;
+                margin-right: 20px;
+            }
+            #background {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                width: 100%;
+            }
+            #grass1 {
+                position: absolute;
+                left: 0px;
+                bottom: 0px;
+            }
+            #grass2 {
+                position: absolute;
+                left: 275px;
+                bottom: 0px;
+            }
+            #grass3 {
+                position: absolute;
+                right: 0px;
+                bottom: 0px;
+            }
+            .grass:hover {
+                background-color: rgba(255, 255, 0, 0.5);
+            }
+        </style>
+    </head>
+    <body>
+        <div id="left">
+            <img id="background" src="images/environment_forestbackground.png">
+            <img class="grass" id="grass1" src="images/grass.png">
+            <img class="grass" id="grass2" src="images/grass.png">
+            <img class="grass" id="grass3" src="images/grass.png">
+        </div>
+        <div id="right">
+            <h1>Gotta Catch 'em All!</h1>
+            <p>You have 5 pokeballs to start with. Each round you will spend one pokeballs and choose a bush. You will get nothing, two more pokemons, or pokemons. You get a 1/8 chance of getting into super round in which you will have suprises!</p>
+            <h2 id="status">Click a grass</h2>
+            <div id="pokemon_caught_div">Pokeballs Caught: 0</div>
+            <div id="pokeballs_left_div">Pokeballs Left: 5</div>
+            <div id="found"></div>
+            <div id="histroy">History: </div>
+            <button id="play_again_button" style="display: none;">Play Again!
+            </button>
+            <button id="reset" style="display: none;">Start OVER
+            </button>
+            <div id="result"></div>
+            <div id="chart"></div>
+        </div>
+
+        <script>
+            // set up DOM queries for all the things we plan on using
+            const pokemon = [
+                {name:'Pikachu', image:'images/pikachu.png'},
+                {name:'Bulbasaur', image:'images/bulbasaur.png'},
+                {name:'Charmander', image:'images/charmander.png'},
+                {name:'Eevee', image:'images/eevee.png'},
+                {name:'Squirtle', image:'images/squirtle.png'}
+            ]
+
+            let superround = [
+                {name:'dragonair', image:'images/dragonair.png'},
+                {name:'grookey',image:'images/grookey.png'},
+            ]
+
+            let round = true;
+            let gameplay = true;
+            const result = document.getElementById("result");
+            const found = document.getElementById("found");
+            const grass1 = document.getElementById('grass1');
+            const grass2 = document.getElementById('grass2');
+            const grass3 = document.getElementById('grass3');
+
+            //for record
+            const pokemon_caught_div = document.getElementById('pokemon_caught_div');
+            const pokeballs_left_div = document.getElementById('pokeballs_left_div');
+            const histroy = document.getElementById('histroy');
+
+            //buttons
+            const play_again_button = document.getElementById('play_again_button');
+            const reset = document.getElementById('reset');
+
+            // create some variables to keep track of our game state logic
+            let pokeballsRemaining = 5;
+            let caught = 0;
+
+            // grass1 - handle user clicks
+            grass1.onclick = function() {
+              if(round == true && gameplay == true){
+
+                                // reduce the # of pokeballs
+                                pokeballsRemaining -= 1;
+
+                                // generate a chance variable
+                                let chance = parseInt( Math.random() * 3 ); // 0, 1 or 2
+
+                                //geneate random pokemon pic
+                                let imageNum = Math.floor(Math.random() * 5);
+
+                                //dedetermine if it is super round
+                                let super1 = Math.floor(Math.random() * 8);
+                                console.log(super1);
+
+                                // more pokeballs
+                                if (chance == 0) {
+                                  if(super1 > 1){
+                                    grass1.src = "images/pokeballs.png";
+                                    pokeballsRemaining += 2;
+                                    histroy.innerHTML +="Pokeballs Found! ";
+                                    found.innerHTML = '<h3> Pokeballs Found! </h3>'
+                                  }
+                                  else{
+                                    grass1.src = "images/master.png";
+                                    pokeballsRemaining += 5;
+                                    histroy.innerHTML +="You get 5 Master Ball! ";
+                                    found.innerHTML = '<h3>SUPER ROUND! Master Ball Found! </h3>'
+                                }}
+                                // nothing happens
+                                else if (chance == 1) {
+                                    grass1.src = '';
+                                    histroy.innerHTML += 'Nothing Found! ';
+                                    found.innerHTML = '<h3> Nothing Found! </h3>'}
+
+                                // it's a pokemon
+                                else {
+
+                                  caught+=1;
+                                  if(super1>1){
+                                  grass1.src = pokemon[imageNum].image;
+                                  let name = pokemon[imageNum].name;
+                                  histroy.innerHTML += name+" ";
+                                  found.innerHTML = '<h3>' +name+ ' Found! </h3>'}
+                                  else{
+                                    let index = parseInt(Math.random()*2);
+                                    grass1.src = superround[index].image;
+                                    let name = superround[index].name;
+                                    histroy.innerHTML += name+" ";
+                                    found.innerHTML = '<h3>SUPER ROUND! Special Pokemon' +name+ ' Found! </h3>'
+                                  }
+
+                                }
+
+                                // round is over, update the pokeballs left indicator
+                                pokeballs_left_div.innerHTML = 'Pokeballs: ' + pokeballsRemaining;
+                                pokemon_caught_div.innerHTML = 'Pokeballs Caught: ' + caught;
+
+                                // make the play agian button visible
+                                play_again_button.style.display = 'block';
+
+              }
+
+              if(pokeballsRemaining <= 0){
+                gameplay = false;
+                reset.style.display = 'block';
+                result.innerHTML = '<h2> GAME OVER </h1>';
+              }
+              round = false;
+            }
+
+            //grass 2 function
+            grass2.onclick = function() {
+              if(round == true && gameplay == true){
+
+                                // reduce the # of pokeballs
+                                pokeballsRemaining -= 1;
+
+                                // generate a chance variable
+                                let chance = parseInt( Math.random() * 3 ); // 0, 1 or 2
+
+                                //geneate random pokemon pic
+                                let imageNum = Math.floor(Math.random() * 5);
+
+                                //dedetermine if it is super round
+                                let super1 = Math.floor(Math.random() * 8);
+                                console.log(super1);
+
+                                // more pokeballs
+                                if (chance == 0) {
+                                  if(super1 > 1){
+                                    grass2.src = "images/pokeballs.png";
+                                    pokeballsRemaining += 2;
+                                    histroy.innerHTML +="Pokeballs Found! ";
+                                    found.innerHTML = '<h3> Pokeballs Found! </h3>'
+                                  }
+                                  else{
+                                    grass2.src = "images/master.png";
+                                    pokeballsRemaining += 5;
+                                    histroy.innerHTML +="You get 5 Master Ball! ";
+                                    found.innerHTML = '<h3>SUPER ROUND! Master Ball Found! </h3>'
+                                }}
+                                // nothing happens
+                                else if (chance == 1) {
+                                    grass2.src = '';
+                                    histroy.innerHTML += 'Nothing Found! ';
+                                    found.innerHTML = '<h3> Nothing Found! </h3>'}
+
+                                // it's a pokemon
+                                else {
+
+                                  caught+=1;
+                                  if(super1>1){
+                                  grass2.src = pokemon[imageNum].image;
+                                  let name = pokemon[imageNum].name;
+                                  histroy.innerHTML += name+" ";
+                                  found.innerHTML = '<h3>' +name+ ' Found! </h3>'}
+                                  else{
+                                    let index = parseInt(Math.random()*2);
+                                    grass2.src = superround[index].image;
+                                    let name = superround[index].name;
+                                    histroy.innerHTML += name+" ";
+                                    found.innerHTML = '<h3> SUPER ROUND! Special Pokemon' +name+ ' Found! </h3>'
+                                  }
+
+                                }
+
+                                // round is over, update the pokeballs left indicator
+                                pokeballs_left_div.innerHTML = 'Pokeballs: ' + pokeballsRemaining;
+                                pokemon_caught_div.innerHTML = 'Pokeballs Caught: ' + caught;
+
+                                // make the play agian button visible
+                                play_again_button.style.display = 'block';
+
+              }
+
+              if(pokeballsRemaining <= 0){
+                gameplay = false;
+                reset.style.display = 'block';
+                result.innerHTML = '<h2> GAME OVER </h1>';
+              }
+              round = false;
+            }
+
+            //grass3 function
+            grass3.onclick = function() {
+              if(round == true && gameplay == true){
+
+                                // reduce the # of pokeballs
+                                pokeballsRemaining -= 1;
+
+                                // generate a chance variable
+                                let chance = parseInt( Math.random() * 3 ); // 0, 1 or 2
+
+                                //geneate random pokemon pic
+                                let imageNum = Math.floor(Math.random() * 5);
+
+                                //dedetermine if it is super round
+                                let super1 = Math.floor(Math.random() * 8);
+                                console.log(super1);
+
+                                // more pokeballs
+                                if (chance == 0) {
+                                  if(super1 > 1){
+                                    grass3.src = "images/pokeballs.png";
+                                    pokeballsRemaining += 2;
+                                    histroy.innerHTML +="Pokeballs Found! ";
+                                    found.innerHTML = '<h3> Pokeballs Found! </h3>'
+                                  }
+                                  else{
+                                    grass3.src = "images/master.png";
+                                    pokeballsRemaining += 5;
+                                    histroy.innerHTML +="You get 5 Master Ball! ";
+                                    found.innerHTML = '<h3>SUPER ROUND! Master Ball Found! </h3>'
+                                }}
+                                // nothing happens
+                                else if (chance == 1) {
+                                    grass3.src = '';
+                                    histroy.innerHTML += 'Nothing Found! ';
+                                    found.innerHTML = '<h3> Nothing Found! </h3>'}
+
+                                // it's a pokemon
+                                else {
+
+                                  caught+=1;
+                                  if(super1>1){
+                                  grass3.src = pokemon[imageNum].image;
+                                  let name = pokemon[imageNum].name;
+                                  histroy.innerHTML += name+" ";
+                                  found.innerHTML = '<h3>' +name+ ' Found! </h3>'}
+                                  else{
+                                    let index = parseInt(Math.random()*2);
+                                    grass3.src = superround[index].image;
+                                    let name = superround[index].name;
+                                    histroy.innerHTML += name+" ";
+                                    found.innerHTML = '<h3>SUPER ROUND! Special Pokemon' +name+ ' Found! </h3>'
+                                  }
+
+                                }
+
+                                // round is over, update the pokeballs left indicator
+                                pokeballs_left_div.innerHTML = 'Pokeballs: ' + pokeballsRemaining;
+                                pokemon_caught_div.innerHTML = 'Pokeballs Caught: ' + caught;
+
+                                // make the play agian button visible
+                                play_again_button.style.display = 'block';
+
+              }
+
+              if(pokeballsRemaining <= 0){
+                gameplay = false;
+                reset.style.display = 'block';
+                result.innerHTML = '<h2> GAME OVER </h1>';
+              }
+              round = false;
+            }
+
+            console.log(gameplay,pokeballsRemaining);
+
+            // when the user clicks on the play again button
+            play_again_button.onclick = function() {
+              if(pokeballsRemaining <= 0){
+                gameplay = false;
+                reset.style.display = 'block';
+              }
+              if(gameplay == true){
+                // make all the grass transition back to their original graphic
+                grass1.src = 'images/grass.png';
+                grass2.src = 'images/grass.png';
+                grass3.src = 'images/grass.png';
+                round = true;
+                // hide the play agian button
+                play_again_button.style.display = 'none';
+              }
+            }
+
+            reset.onclick = function() {
+                // make all the grass transition back to their original graphic
+                result.innerHTML = " ";
+                histroy.innerHTML = "history: ";
+                found.innerHTML = "";
+                pokeballsRemaining = 5;
+                gameplay = true;
+                round = true;
+                grass1.src = 'images/grass.png';
+                grass2.src = 'images/grass.png';
+                grass3.src = 'images/grass.png';
+                // hide the play agian button
+                play_again_button.style.display = 'none';
+                reset.style.display = 'none';
+                pokeballs_left_div.innerHTML = 'Pokeballs: ' + pokeballsRemaining;
+                // while(history.firstChild){
+                //   div.removeChild(history.firstChild);
+                // }
+            }
+
+
+        </script>
+    </body>
+</html>

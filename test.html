@@ -1,0 +1,371 @@
+
+
+
+
+
+<!doctype html>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+<link rel="icon" type="image/png" href="Assignment/q1.png">
+<link rel="stylesheet" type="text/css" href="css/custom.css">
+
+
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<title>Web Development Portfolio</title>
+		<style media="screen">
+
+      .navbar-brand{
+        font-weight: bold;
+        color: #DEC6EF;
+        font-family:Serif;
+      }
+      .navbar{
+        background-color: black;
+      }
+      .nav-link{
+        color: #DEC6EF;
+        font-family:Serif;
+      }
+			.row{
+				display: grid;
+			}
+			@media (min-width: 0px) {
+				.row { grid-template-columns: repeat(1, 1fr); }
+			}
+			@media (min-width: 481px) {
+				.row { grid-template-columns: repeat(3, 1fr); }
+			}
+			@media (min-width: 961px) {
+				.row { grid-template-columns: repeat(6, 1fr); }
+			}
+			#contentPanel{
+			display : flex;
+			justify-content: center;
+			align-items: center;
+		}
+		#contentPanel img{
+			width : 60px;
+			height : 60px;
+			margin : 40px;
+		}
+
+		body{
+			overflow-x: hidden;
+				background-size: cover;
+				background-repeat: no-repeat;
+				background-attachment: fixed;
+				background-color: black;
+				background-image: url("images/moon.png");
+				align-items: center;
+				justify-content: center;
+			}
+
+			footer{
+				color:black;
+				font-family: myCustomFont;
+				/* position: absolute;
+				bottom: 0px;
+				right: 0px; */
+			}
+
+      svg:hover{
+        fill:#75409B;
+      }
+
+			.border{
+				border: 3px solid #DEC6EF;
+			}
+		.word{
+			color: white;
+			position: relative;
+			left: 30vw;
+			font-weight:bold;
+		}
+		.tmp{
+			width:170px;
+			height:170px;
+			padding:30px;
+			fill:#DEC6EF;
+		}
+		.no1{
+			width:170px;
+			height:170px;
+			padding:30px;
+			fill:#013291;
+		}
+		.no2{
+			width:170px;
+			height:170px;
+			padding:30px;
+			fill:#426BAD;
+		}
+		.no3{
+			width:170px;
+			height:170px;
+			padding:30px;
+			fill:#ffff00;
+		}
+		p{
+			color:#bdbce0;
+			font-weight:bold;
+		}
+		h5{
+			font-size:15px;
+			font-family:Serif;
+			position:relative;
+			left:32vw;
+			color:white;
+		}
+
+		</style>
+	</head>
+
+	<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary border">
+    <div class="container-fluid" style="background-color:black;">
+      <a class="navbar-brand">Chomd777</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="test.html">Home</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+<h1 class="word" id="title">-Web Development Portfolio-</h1>
+
+	</header>
+
+
+
+
+	<body>
+
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+		<!-- JQUERY -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script>
+			$(document).ready(function(){
+
+				$("#topPanel").animate({
+					top : "-=310"
+				}, 500, function(){
+					//launch the next animation
+				});
+
+				$("#bottomPanel").animate({
+					bottom : "-=310"
+				}, 500);
+
+			});
+		</script>
+
+		<h5>Right now my latest work is Macro6. Have a look and hope you would like it!</h5>
+		<div class="container text-center">
+			<div class="row">
+
+				<div class="col">
+					<a href="https://edstem.org/us/courses/32515/lessons/51797/slides/289963">
+						<svg class="tmp"xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-code" viewBox="0 0 16 16">
+						  <path d="M5.854 4.854a.5.5 0 1 0-.708-.708l-3.5 3.5a.5.5 0 0 0 0 .708l3.5 3.5a.5.5 0 0 0 .708-.708L2.707 8l3.147-3.146zm4.292 0a.5.5 0 0 1 .708-.708l3.5 3.5a.5.5 0 0 1 0 .708l-3.5 3.5a.5.5 0 0 1-.708-.708L13.293 8l-3.147-3.146z"/>
+						</svg>
+					</a>
+					<p>Micro Assignment1</p>
+				</div>
+
+
+				<div class="col">
+					<a href="test.html">
+						<svg class="tmp" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-diamond" viewBox="0 0 16 16"><path d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 0 1 0-2.098L6.95.435zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z"/></svg>
+					</a>
+					<p>Macro Assignment1</p>
+				</div>
+
+
+				<div class="col">
+					<a href="https://edstem.org/us/courses/32515/lessons/52852/slides/301919">
+						<svg class="tmp"xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-code" viewBox="0 0 16 16">
+							<path d="M5.854 4.854a.5.5 0 1 0-.708-.708l-3.5 3.5a.5.5 0 0 0 0 .708l3.5 3.5a.5.5 0 0 0 .708-.708L2.707 8l3.147-3.146zm4.292 0a.5.5 0 0 1 .708-.708l3.5 3.5a.5.5 0 0 1 0 .708l-3.5 3.5a.5.5 0 0 1-.708-.708L13.293 8l-3.147-3.146z"/>
+						</svg>
+					</a>
+					<p id="special">Micro Assignment2</p>
+				</div>
+
+
+				<div class="col">
+					<a href = Macro2.html>
+						<svg class="tmp"xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-diamond-half" viewBox="0 0 16 16">
+							<path d="M9.05.435c-.58-.58-1.52-.58-2.1 0L.436 6.95c-.58.58-.58 1.519 0 2.098l6.516 6.516c.58.58 1.519.58 2.098 0l6.516-6.516c.58-.58.58-1.519 0-2.098L9.05.435zM8 .989c.127 0 .253.049.35.145l6.516 6.516a.495.495 0 0 1 0 .7L8.35 14.866a.493.493 0 0 1-.35.145V.989z"/>
+						</svg>
+					</a>
+					<p>Macro Assignment2</p>
+				</div>
+
+
+				<div class="col">
+					<a href = "https://edstem.org/us/courses/32515/lessons/54632/slides/308986">
+						<svg class="tmp"xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-code" viewBox="0 0 16 16">
+							<path d="M5.854 4.854a.5.5 0 1 0-.708-.708l-3.5 3.5a.5.5 0 0 0 0 .708l3.5 3.5a.5.5 0 0 0 .708-.708L2.707 8l3.147-3.146zm4.292 0a.5.5 0 0 1 .708-.708l3.5 3.5a.5.5 0 0 1 0 .708l-3.5 3.5a.5.5 0 0 1-.708-.708L13.293 8l-3.147-3.146z"/>
+						</svg>
+					</a>
+					<p id="special">Micro Assignment3</p>
+				</div>
+
+
+				<div class="col">
+					<a href = "Macro3.html">
+						<svg class="tmp" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-diamond" viewBox="0 0 16 16"><path d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 0 1 0-2.098L6.95.435zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z"/></svg>
+					</a>
+					<p>Macro Assignment3</p>
+				</div>
+			</div>
+
+
+
+
+
+
+			<div class="row">
+				<div class="col">
+					<a href="https://edstem.org/us/courses/32515/lessons/55072/slides/311687">
+						<svg class="tmp"xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-code" viewBox="0 0 16 16">
+							<path d="M5.854 4.854a.5.5 0 1 0-.708-.708l-3.5 3.5a.5.5 0 0 0 0 .708l3.5 3.5a.5.5 0 0 0 .708-.708L2.707 8l3.147-3.146zm4.292 0a.5.5 0 0 1 .708-.708l3.5 3.5a.5.5 0 0 1 0 .708l-3.5 3.5a.5.5 0 0 1-.708-.708L13.293 8l-3.147-3.146z"/>
+						</svg>
+					</a>
+					<p id="special">Micro Assignment4</p>
+				</div>
+
+
+				<div class="col">
+					<a href = "Macro4/index.html">
+						<svg class="tmp"xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-diamond-half" viewBox="0 0 16 16">
+							<path d="M9.05.435c-.58-.58-1.52-.58-2.1 0L.436 6.95c-.58.58-.58 1.519 0 2.098l6.516 6.516c.58.58 1.519.58 2.098 0l6.516-6.516c.58-.58.58-1.519 0-2.098L9.05.435zM8 .989c.127 0 .253.049.35.145l6.516 6.516a.495.495 0 0 1 0 .7L8.35 14.866a.493.493 0 0 1-.35.145V.989z"/>
+						</svg>
+					</a>
+					<p>Macro Assignment4</p>
+				</div>
+
+
+				<div class="col">
+					<a id="special" href="https://edstem.org/us/courses/32515/lessons/55121/slides/311920">
+						<svg class="tmp"xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-code" viewBox="0 0 16 16">
+							<path d="M5.854 4.854a.5.5 0 1 0-.708-.708l-3.5 3.5a.5.5 0 0 0 0 .708l3.5 3.5a.5.5 0 0 0 .708-.708L2.707 8l3.147-3.146zm4.292 0a.5.5 0 0 1 .708-.708l3.5 3.5a.5.5 0 0 1 0 .708l-3.5 3.5a.5.5 0 0 1-.708-.708L13.293 8l-3.147-3.146z"/>
+						</svg>
+					</a>
+					<p id="rea">Micro Assignment5</p>
+				</div>
+
+
+				<div class="col">
+					<a href="Macro5/Macro5.html">
+						<svg class="tmp" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-diamond" viewBox="0 0 16 16"><path d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 0 1 0-2.098L6.95.435zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z"/></svg>
+					</a>
+					<p>Macro Assignment5</p>
+				</div>
+
+
+				<div class="col">
+					<a href="micro06.php">
+						<svg class="tmp"xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-code" viewBox="0 0 16 16">
+							<path d="M5.854 4.854a.5.5 0 1 0-.708-.708l-3.5 3.5a.5.5 0 0 0 0 .708l3.5 3.5a.5.5 0 0 0 .708-.708L2.707 8l3.147-3.146zm4.292 0a.5.5 0 0 1 .708-.708l3.5 3.5a.5.5 0 0 1 0 .708l-3.5 3.5a.5.5 0 0 1-.708-.708L13.293 8l-3.147-3.146z"/>
+						</svg>
+					</a>
+					<p id="special">Micro Assignment6</p>
+				</div>
+
+
+				<div class="col">
+					<a href="Macro6/Macro6.html">
+						<svg class="tmp"xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-diamond-half" viewBox="0 0 16 16">
+							<path d="M9.05.435c-.58-.58-1.52-.58-2.1 0L.436 6.95c-.58.58-.58 1.519 0 2.098l6.516 6.516c.58.58 1.519.58 2.098 0l6.516-6.516c.58-.58.58-1.519 0-2.098L9.05.435zM8 .989c.127 0 .253.049.35.145l6.516 6.516a.495.495 0 0 1 0 .7L8.35 14.866a.493.493 0 0 1-.35.145V.989z"/>
+						</svg>
+					</a>
+					<p>Macro Assignment6</p>
+				</div>
+			</div>
+
+
+
+
+
+			<div class="row">
+				<div class="col">
+					<a>
+						<svg class="tmp"xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-code" viewBox="0 0 16 16">
+							<path d="M5.854 4.854a.5.5 0 1 0-.708-.708l-3.5 3.5a.5.5 0 0 0 0 .708l3.5 3.5a.5.5 0 0 0 .708-.708L2.707 8l3.147-3.146zm4.292 0a.5.5 0 0 1 .708-.708l3.5 3.5a.5.5 0 0 1 0 .708l-3.5 3.5a.5.5 0 0 1-.708-.708L13.293 8l-3.147-3.146z"/>
+						</svg>
+					</a>
+					<p id="special">Micro Assignment7</p>
+				</div>
+
+
+				<div class="col">
+					<a>
+						<svg class="tmp" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-diamond" viewBox="0 0 16 16"><path d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 0 1 0-2.098L6.95.435zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z"/></svg>
+</a>
+					<p>Macro Assignment7</p>
+				</div>
+
+
+				<div class="col">
+					<a>
+						<svg class="tmp"xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-code" viewBox="0 0 16 16">
+							<path d="M5.854 4.854a.5.5 0 1 0-.708-.708l-3.5 3.5a.5.5 0 0 0 0 .708l3.5 3.5a.5.5 0 0 0 .708-.708L2.707 8l3.147-3.146zm4.292 0a.5.5 0 0 1 .708-.708l3.5 3.5a.5.5 0 0 1 0 .708l-3.5 3.5a.5.5 0 0 1-.708-.708L13.293 8l-3.147-3.146z"/>
+						</svg>
+					</a>
+					<p id="special">Micro Assignment8</p>
+				</div>
+
+
+				<div class="col">
+					<a>
+						<svg class="no1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gem" viewBox="0 0 16 16">
+							<path d="M3.1.7a.5.5 0 0 1 .4-.2h9a.5.5 0 0 1 .4.2l2.976 3.974c.149.185.156.45.01.644L8.4 15.3a.5.5 0 0 1-.8 0L.1 5.3a.5.5 0 0 1 0-.6l3-4zm11.386 3.785-1.806-2.41-.776 2.413 2.582-.003zm-3.633.004.961-2.989H4.186l.963 2.995 5.704-.006zM5.47 5.495 8 13.366l2.532-7.876-5.062.005zm-1.371-.999-.78-2.422-1.818 2.425 2.598-.003zM1.499 5.5l5.113 6.817-2.192-6.82L1.5 5.5zm7.889 6.817 5.123-6.83-2.928.002-2.195 6.828z"/>
+						</svg>
+					</a>
+					<p>Macro Assignment8</p>
+				</div>
+
+
+				<div class="col">
+					<a>
+						<svg class="no2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gem" viewBox="0 0 16 16">
+							<path d="M3.1.7a.5.5 0 0 1 .4-.2h9a.5.5 0 0 1 .4.2l2.976 3.974c.149.185.156.45.01.644L8.4 15.3a.5.5 0 0 1-.8 0L.1 5.3a.5.5 0 0 1 0-.6l3-4zm11.386 3.785-1.806-2.41-.776 2.413 2.582-.003zm-3.633.004.961-2.989H4.186l.963 2.995 5.704-.006zM5.47 5.495 8 13.366l2.532-7.876-5.062.005zm-1.371-.999-.78-2.422-1.818 2.425 2.598-.003zM1.499 5.5l5.113 6.817-2.192-6.82L1.5 5.5zm7.889 6.817 5.123-6.83-2.928.002-2.195 6.828z"/>
+						</svg>
+					</a>
+					<p>Macro Assignment9</p>
+				</div>
+
+
+				<div class="col">
+					<a>
+						<svg class="no3" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gem" viewBox="0 0 16 16">
+						  <path d="M3.1.7a.5.5 0 0 1 .4-.2h9a.5.5 0 0 1 .4.2l2.976 3.974c.149.185.156.45.01.644L8.4 15.3a.5.5 0 0 1-.8 0L.1 5.3a.5.5 0 0 1 0-.6l3-4zm11.386 3.785-1.806-2.41-.776 2.413 2.582-.003zm-3.633.004.961-2.989H4.186l.963 2.995 5.704-.006zM5.47 5.495 8 13.366l2.532-7.876-5.062.005zm-1.371-.999-.78-2.422-1.818 2.425 2.598-.003zM1.499 5.5l5.113 6.817-2.192-6.82L1.5 5.5zm7.889 6.817 5.123-6.83-2.928.002-2.195 6.828z"/>
+						</svg>
+					</a>
+					<p>Macro Assignment10</p>
+				</div>
+			</div>
+		</div>
+
+
+
+	</body>
+
+
+	<footer>
+		© Charlotte Ma
+	</footer>
+</html>
